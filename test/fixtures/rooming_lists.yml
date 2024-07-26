@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event_user: one
+  guest_list: 
+  check_in: 2024-07-25 22:10:42
+  check_out: 2024-07-25 22:10:42
+  room_type: MyString
+
+two:
+  event_user: two
+  guest_list: 
+  check_in: 2024-07-25 22:10:42
+  check_out: 2024-07-25 22:10:42
+  room_type: MyString
