@@ -1,8 +1,4 @@
-class ApplicationController < ActionController::API
-  include Graphiti::Rails
-  include Graphiti::Rails::Responders
+class ApplicationController < ActionController::Base
   include ActiveStorage::SetCurrent
-
-
 
 end

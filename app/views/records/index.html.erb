@@ -1,0 +1,87 @@
+<div class="card">
+  <div class="card-header bg-primary text-white">
+    <h4 class="mb-0"><i class="fas fa-search me-2"></i>Search Records</h4>
+  </div>
+  <div class="card-body">
+    <%= form_with url: records_path, method: :get, local: true, class: "mb-4" do |form| %>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="form-floating">
+            <%= form.text_field :pid, class: "form-control", placeholder: "Enter PID", value: params[:pid] %>
+            <%= form.label :pid, "PID" %>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="form-floating">
+            <%= form.text_field :iban, class: "form-control", placeholder: "Enter IBAN", value: params[:iban] %>
+            <%= form.label :iban, "IBAN" %>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="form-floating">
+            <%= form.text_field :trade_license_number, class: "form-control", placeholder: "Enter Trade License", value: params[:trade_license_number] %>
+            <%= form.label :trade_license_number, "Trade License Number" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <%= form.submit 'Search', class: "btn btn-primary btn-lg px-4" %>
+        <%= link_to 'Clear', records_path, class: "btn btn-outline-secondary btn-lg px-4 ms-2" %>
+      </div>
+    <% end %>
+
+    <% if @records.any? %>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>PID</th>
+              <th>IBAN</th>
+              <th>Trade License Number</th>
+              <th>Workbook Name</th>
+              <th>Sheet Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @records.each do |record| %>
+              <tr>
+                <td><%= record.pid %></td>
+                <td><%= record.iban %></td>
+                <td><%= record.trade_license_number %></td>
+                <td><%= record.work_book_name %></td>
+                <td><%= record.sheet_name %></td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#recordModal<%= record.id %>">
+                    <i class="fas fa-eye"></i> View Details
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Modal for each record -->
+              <%= render 'details_modal', record: record %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <div class="text-muted">
+          Showing <%= @records.offset_value + 1 %> to <%= @records.offset_value + @records.length %> of <%= @records.total_count %> records
+        </div>
+        <div class="pagination-wrapper">
+          <%= paginate @records %>
+        </div>
+      </div>
+    <% else %>
+      <div class="text-center text-muted mt-4">
+        <i class="fas fa-search fa-3x mb-3"></i>
+        <h5>No records found</h5>
+        <p>Try adjusting your search criteria</p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -77,3 +77,7 @@ gem 'kaminari'
 gem 'rack-cors'
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
+
+gem 'roo'            # For reading Excel files
+gem 'activerecord-import'  # For efficient bulk inserts
+gem 'byebug'

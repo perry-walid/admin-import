@@ -1,15 +1,238 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
+ * This is a manifest file that'll be compiled into application.css
  *= require_tree .
  *= require_self
  */
+
+/* Noon brand colors */
+:root {
+  --noon-yellow: #FEEE00;
+  --noon-black: #000000;
+  --noon-gray: #F8F9FA;
+}
+
+/* General styles */
+body {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Navbar customization */
+.navbar {
+  background-color: var(--noon-black) !important;
+  border-bottom: 3px solid var(--noon-yellow);
+}
+
+.navbar-brand img {
+  height: 30px;
+  margin-right: 8px;
+}
+
+/* Card styles */
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  margin-bottom: 2rem;
+}
+
+.card-header {
+  background-color: var(--noon-black) !important;
+  color: var(--noon-yellow) !important;
+  border-bottom: none;
+}
+
+/* Form styles */
+.form-floating > .form-control:focus,
+.form-floating > .form-control:not(:placeholder-shown) {
+  border-color: var(--noon-yellow);
+  box-shadow: 0 0 0 0.25rem rgba(254, 238, 0, 0.25);
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: var(--noon-black);
+  border-color: var(--noon-black);
+  color: var(--noon-yellow);
+}
+
+.btn-primary:hover {
+  background-color: var(--noon-yellow);
+  border-color: var(--noon-black);
+  color: var(--noon-black);
+}
+
+/* Upload container styles */
+.upload-container {
+  border: 2px dashed #ccc !important;
+  transition: all 0.3s ease;
+  background-color: var(--noon-gray);
+}
+
+.upload-container.dragover {
+  border-color: var(--noon-yellow) !important;
+  background-color: rgba(254, 238, 0, 0.05);
+}
+
+/* File item styles */
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin: 5px 0;
+  background: var(--noon-gray);
+  border-radius: 4px;
+}
+
+.remove-file {
+  color: #dc3545;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 4px;
+}
+
+/* Table styles */
+.table-responsive {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: var(--noon-black);
+  color: var(--noon-yellow);
+  border: none;
+}
+
+/* Modal styles */
+.modal-header {
+  background-color: var(--noon-black);
+  color: var(--noon-yellow);
+  border-bottom: none;
+}
+
+.modal-header .btn-close {
+  color: var(--noon-yellow);
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Alert styles */
+.alert {
+  border: none;
+  border-radius: 4px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Record Details Modal Styles */
+.detail-card {
+  background-color: var(--noon-gray);
+  border-radius: 8px;
+  padding: 12px;
+  height: 100%;
+}
+
+.detail-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 4px;
+}
+
+.detail-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.json-viewer {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 16px;
+  color: #d4d4d4;
+}
+
+.json-content {
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+.json-item {
+  display: flex;
+  padding: 8px;
+  border-bottom: 1px solid #333333;
+  line-height: 1.5;
+}
+
+.json-item:last-child {
+  border-bottom: none;
+}
+
+.json-item:hover {
+  background-color: #2d2d2d;
+}
+
+.json-key {
+  flex: 0 0 200px;
+  padding-right: 16px;
+  color: #9cdcfe;
+  position: relative;
+}
+
+.json-key::after {
+  content: ":";
+  color: #d4d4d4;
+  position: absolute;
+  right: 8px;
+}
+
+.json-value {
+  flex: 1;
+  word-break: break-all;
+  color: #ce9178;
+}
+
+.json-value.number {
+  color: #b5cea8;
+}
+
+.json-value.boolean {
+  color: #569cd6;
+}
+
+.json-value.null {
+  color: #569cd6;
+}
+
+/* Copy button styling */
+.copy-json {
+  background-color: #2d2d2d !important;
+  border-color: #444444 !important;
+  color: #d4d4d4 !important;
+}
+
+.copy-json:hover {
+  background-color: #3d3d3d !important;
+  border-color: #555555 !important;
+}
+
+/* Add animation for copy feedback */
+@keyframes copyFeedback {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.copy-feedback {
+  animation: copyFeedback 0.3s ease-in-out;
+}

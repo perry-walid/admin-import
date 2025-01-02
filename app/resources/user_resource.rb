@@ -4,7 +4,6 @@ class UserResource < ApplicationResource
   attribute :password, :string, readable: false
   attribute :role, :string
 
-  many_to_many :events
 end
 
 

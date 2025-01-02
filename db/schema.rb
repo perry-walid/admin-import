@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_25_191042) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_30_171553) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,63 +42,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_25_191042) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "attachments", force: :cascade do |t|
-    t.bigint "event_user_id", null: false
+  create_table "records", force: :cascade do |t|
+    t.string "pid"
+    t.string "iban"
+    t.string "trade_license_number"
+    t.jsonb "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "description"
-    t.index ["event_user_id"], name: "index_attachments_on_event_user_id"
+    t.string "work_book_name"
+    t.string "sheet_name"
+    t.index ["iban"], name: "index_records_on_iban"
+    t.index ["pid"], name: "index_records_on_pid"
+    t.index ["trade_license_number"], name: "index_records_on_trade_license_number"
   end
 
-  create_table "event_users", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "event_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_event_users_on_event_id"
-    t.index ["user_id"], name: "index_event_users_on_user_id"
-  end
-
-  create_table "events", force: :cascade do |t|
+  create_table "sheets", force: :cascade do |t|
     t.string "name"
-    t.text "description"
-    t.datetime "scheduled_for"
-    t.string "location"
-    t.string "status"
+    t.integer "status"
+    t.text "error_message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "rooming_lists", force: :cascade do |t|
-    t.bigint "event_user_id", null: false
-    t.jsonb "guest_list"
-    t.datetime "check_in"
-    t.datetime "check_out"
-    t.string "room_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["event_user_id"], name: "index_rooming_lists_on_event_user_id"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "username"
-    t.string "jti", null: false
-    t.string "role"
-    t.index ["jti"], name: "index_users_on_jti", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "attachments", "event_users"
-  add_foreign_key "event_users", "events"
-  add_foreign_key "event_users", "users"
-  add_foreign_key "rooming_lists", "event_users"
 end

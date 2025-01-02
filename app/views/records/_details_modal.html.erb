@@ -1,0 +1,64 @@
+<div class="modal fade" id="recordModal<%= record.id %>" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-file-alt me-2"></i>Record Details
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="record-summary mb-4">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="detail-card">
+                <div class="detail-label">PID</div>
+                <div class="detail-value"><%= record.pid %></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="detail-card">
+                <div class="detail-label">IBAN</div>
+                <div class="detail-value"><%= record.iban %></div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="detail-card">
+                <div class="detail-label">Trade License</div>
+                <div class="detail-value"><%= record.trade_license_number %></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="json-viewer">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0 text-light">Full Record Data</h6>
+            <button class="btn btn-sm btn-outline-primary copy-json" data-record-id="<%= record.id %>">
+              <i class="fas fa-copy me-1"></i>Copy JSON
+            </button>
+          </div>
+          <div class="json-content" id="jsonContent<%= record.id %>">
+            <% record.data.each do |key, value| %>
+              <div class="json-item">
+                <span class="json-key"><%= key %></span>
+                <% css_class = case value
+                   when Numeric then 'number'
+                   when TrueClass, FalseClass then 'boolean'
+                   when NilClass then 'null'
+                   else 'string'
+                   end %>
+                <span class="json-value <%= css_class %>">
+                  <%= value.nil? ? 'null' : (value.is_a?(Hash) ? JSON.pretty_generate(value) : value) %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event_user: one
+  flight_number: MyString
+  passenger: MyString
+  departure_time: 2024-08-10 21:18:09
+  arrival_time: 2024-08-10 21:18:09
+
+two:
+  event_user: two
+  flight_number: MyString
+  passenger: MyString
+  departure_time: 2024-08-10 21:18:09
+  arrival_time: 2024-08-10 21:18:09

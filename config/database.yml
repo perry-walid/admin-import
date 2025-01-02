@@ -2,23 +2,15 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+  url: <%= ENV['DATABASE_URL'] %>
 
 development:
   <<: *default
-  database: real_estate_development
-  # username: real_estate
-  # password: <%= ENV['real_estate_DATABASE_PASSWORD'] %>
-  username: 
-  password:
-  host: localhost
+  database: import_sheets_development
 
 test:
   <<: *default
-  database: real_estate_test
-  host: localhost
+  database: import_sheets_test
 
 production:
   <<: *default
-  database: real_estate_production
-  host: localhost
