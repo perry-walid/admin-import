@@ -2,7 +2,9 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  url: <%= ENV['DATABASE_URL'] %>
+  url: postgres://admin-noon.cps82qkogk9p.eu-north-1.rds.amazonaws.com:5432/admin-noon
+  username: postgres
+  password: perrywalid
 
 development:
   <<: *default
