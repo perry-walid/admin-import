@@ -4,9 +4,8 @@ class ImportExcelJob < ApplicationJob
   attr_accessor :sheet
   
   COLUMN_VARIATIONS = {
-    'pid' => ['PID', 'Pid', 'pid'],
-    'iban' => ['IBAN', 'Iban', 'iban'],
-    'trade_license_number' => ['trade_license_number', 'Trade License Number', 'TRADE LICENSE NUMBER', 'Trade_License_Number']
+    'pid' => ['PID', 'Pid', 'pid', 'id_partner'],
+    'trade_license_number' => ['trade_license_number', 'Trade License Number', 'TRADE LICENSE NUMBER', 'Trade_License_Number', 'tl_number']
   }
 
   def perform(sheet_id)
@@ -63,10 +62,16 @@ class ImportExcelJob < ApplicationJob
     
     # Create a mapping of found columns
     column_mapping = {}
+    
+    # Handle PID and Trade License Number normally
     COLUMN_VARIATIONS.each do |field, variations|
       found_header = variations.find { |var| headers.include?(var) }
       column_mapping[field] = found_header if found_header
     end
+    
+    # Special handling for IBAN using regex
+    iban_header = headers.find { |header| header.match?(/iban/i) }
+    column_mapping['iban'] = iban_header if iban_header
     
     # Check if at least one required column exists
     if column_mapping.empty?
@@ -77,14 +82,18 @@ class ImportExcelJob < ApplicationJob
     (2..sheet.last_row).each do |i|
       row = Hash[[headers, sheet.row(i)].transpose]
       
-      # Only create record if at least one required field has a value
+      # Format PID as string without decimal point if it's a number
+      pid_value = column_mapping['pid'] ? row[column_mapping['pid']] : nil
+      pid_value = pid_value.to_f.to_i.to_s if pid_value.is_a?(Float)
+      
       record_data = {
-        pid: column_mapping['pid'] ? row[column_mapping['pid']] : nil,
+        pid: pid_value,
         iban: column_mapping['iban'] ? row[column_mapping['iban']] : nil,
         trade_license_number: column_mapping['trade_license_number'] ? row[column_mapping['trade_license_number']] : nil,
         data: row,
         sheet_name: sheet_name,
-        work_book_name: workbook_name
+        work_book_name: workbook_name,
+        sheet_id: @sheet.id
       }
 
       # Skip empty rows or rows with no required fields

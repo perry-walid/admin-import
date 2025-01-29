@@ -10,6 +10,6 @@ class RecordsController < ApplicationController
   private
 
   def filtering_params(params)
-    params.slice(:pid, :iban, :trade_license_number)
+    params.slice(:pid, :iban, :trade_license_number, :sheet_id)
   end
 end

@@ -9,6 +9,8 @@ Rails.application.configure do
   config.enable_reloading = true
 
   # Do not eager load code on boot.
+  config.hosts << "thorough-mudfish-kindly.ngrok-free.app"
+
   config.eager_load = true
 
   # Show full error reports.
