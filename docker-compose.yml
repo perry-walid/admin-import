@@ -1,33 +1,51 @@
-version: '3'
+version: "3.9"
+
 services:
   db:
-    image: postgres:14
+    image: postgres:15
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - /home/ubuntu/db/data:/var/lib/postgresql/data 
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      POSTGRES_DB: import_sheets_development
-    ports:
-      - "5432:5432"
-
-  web:
-    image: your-username/noon-admin:latest
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p ${PORT} -b '0.0.0.0'"
-    volumes:
-      - .:/app
-      - bundle_cache:/usr/local/bundle
-    ports:
-      - "${PORT}:${PORT}"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "5"
+  app:
+    build: .
     depends_on:
       - db
     environment:
-      PORT: 3000
-      DATABASE_URL: postgres://postgres:password@db:5432/import_sheets_development
-      RAILS_ENV: development
-    stdin_open: true
-    tty: true
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REDIS_URL: "redis://${REDIS_URL}:6379"
+      ELASTICSEARCH_URL: "http://${ELASTICSEARCH_HOST}:9200"
+    ports:
+      - "3000:3000"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "5"
+    command: bundle exec rails s -b 0.0.0.0 -p 3000
 
-volumes:
-  postgres_data:
-  bundle_cache: 
+  sidekiq:
+    build: .
+    depends_on:
+      - db
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      REDIS_URL: "redis://${REDIS_URL}:6379" 
+      ELASTICSEARCH_URL: "http://${ELASTICSEARCH_HOST}:9200"
+    mem_limit: 512m
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "5"
+    command: bundle exec sidekiq
